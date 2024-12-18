@@ -1,0 +1,4 @@
+name: EXOS_MenuApi
+version: '${project.version}'
+main: org.n1nes0cks.exos_menuapi.EXOS_MenuApi
+api-version: '1.19'
