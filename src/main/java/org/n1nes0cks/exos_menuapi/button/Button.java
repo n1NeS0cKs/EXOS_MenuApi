@@ -9,7 +9,7 @@ import org.n1nes0cks.exos_menuapi.EXOS_MenuApi;
 
 public class Button {
 
-    private ButtonAction action;
+    private final ButtonAction action;
     private String identifier;
     private ItemStack itemStack;
     private int slot;

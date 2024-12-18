@@ -60,4 +60,9 @@ public abstract class AbstractMenu {
         }
     }
 
+    public void removeButton(Button button) {
+        if(buttons.containsKey(button.getIdentifier()))
+            buttons.remove(button.getIdentifier());
+    }
+
 }
