@@ -23,13 +23,13 @@ public abstract class AbstractMenu {
         this.inventory = inventory;
     }
 
-    public void compile(Plugin plugin) {
+    public void compile() {
         inventory.clear();
         MenuProcessor.register(this);
         for(Button button : buttons.values()) {
             inventory.setItem(button.getSlot(),button.getItemStack());
         }
-        plugin.getServer().getPluginManager().registerEvents(new MenuListener(this), EXOS_MenuApi.getInit());
+        EXOS_MenuApi.getInit().getServer().getPluginManager().registerEvents(new MenuListener(this), EXOS_MenuApi.getInit());
     }
 
     public void update() {
@@ -59,6 +59,7 @@ public abstract class AbstractMenu {
            else {
                Bukkit.getLogger().warning("Кнопка " + button.getIdentifier() + " уже существует");
            }
+            update();
         }
     }
 
@@ -67,6 +68,7 @@ public abstract class AbstractMenu {
             if (this.buttons.containsKey(button.getIdentifier()))
                 this.buttons.remove(button.getIdentifier());
         }
+        update();
     }
 
 }
