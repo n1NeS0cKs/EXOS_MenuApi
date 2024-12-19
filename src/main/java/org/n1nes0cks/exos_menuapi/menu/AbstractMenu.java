@@ -51,18 +51,22 @@ public abstract class AbstractMenu {
         return buttons;
     }
 
-    public void addButton(Button button) {
-        if(!buttons.containsKey(button.getIdentifier())) {
-            buttons.put(button.getIdentifier(), button);
-        }
-        else {
-            Bukkit.getLogger().warning("Кнопка " + button.getIdentifier() + " уже существует");
+    public void addButton(Button... buttons) {
+        for(Button button : buttons) {
+           if(!this.buttons.containsKey(button.getIdentifier())) {
+               this.buttons.put(button.getIdentifier(), button);
+           }
+           else {
+               Bukkit.getLogger().warning("Кнопка " + button.getIdentifier() + " уже существует");
+           }
         }
     }
 
-    public void removeButton(Button button) {
-        if(buttons.containsKey(button.getIdentifier()))
-            buttons.remove(button.getIdentifier());
+    public void removeButton(Button... buttons) {
+        for(Button button : buttons) {
+            if (this.buttons.containsKey(button.getIdentifier()))
+                this.buttons.remove(button.getIdentifier());
+        }
     }
 
 }
