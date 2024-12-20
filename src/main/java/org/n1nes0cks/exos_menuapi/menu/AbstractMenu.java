@@ -59,8 +59,8 @@ public abstract class AbstractMenu {
            else {
                Bukkit.getLogger().warning("Кнопка " + button.getIdentifier() + " уже существует");
            }
-            update();
         }
+        update();
     }
 
     public void removeButton(Button... buttons) {
