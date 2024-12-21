@@ -5,9 +5,12 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 import org.n1nes0cks.exos_menuapi.EXOS_MenuApi;
 import org.n1nes0cks.exos_menuapi.button.Button;
+import org.n1nes0cks.exos_menuapi.button.Multi;
 import org.n1nes0cks.exos_menuapi.button.Unregister;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 
 public class MenuProcessor {
 
@@ -30,8 +33,12 @@ public class MenuProcessor {
                         button.getItemStack().setItemMeta(meta);
                     }
                         if (field.isAnnotationPresent(Unregister.class)) continue;
-                        menu.addButton(button);
+                        if(field.isAnnotationPresent(Multi.class)){
+                            Multi multiAnnotation = field.getAnnotation(Multi.class);
 
+                        }else {
+                            menu.addButton(button);
+                        }
                 }catch (Exception e) {e.printStackTrace();}
             }
         }

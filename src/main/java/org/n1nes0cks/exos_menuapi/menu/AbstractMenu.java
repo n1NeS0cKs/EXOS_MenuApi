@@ -3,7 +3,6 @@ package org.n1nes0cks.exos_menuapi.menu;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.plugin.Plugin;
 import org.n1nes0cks.exos_menuapi.EXOS_MenuApi;
 import org.n1nes0cks.exos_menuapi.button.Button;
 
@@ -12,14 +11,16 @@ import java.util.HashMap;
 
 public abstract class AbstractMenu {
 
-    private HashMap<String, Button> buttons = new HashMap<>();
+    private HashMap<String, Button> buttons;
     private Inventory inventory;
 
     public AbstractMenu(int size, String name) {
+        buttons = new HashMap<>();
         inventory = Bukkit.createInventory(null, size, name);
     }
 
     public AbstractMenu(Inventory inventory) {
+        buttons = new HashMap<>();
         this.inventory = inventory;
     }
 
@@ -65,8 +66,10 @@ public abstract class AbstractMenu {
 
     public void removeButton(Button... buttons) {
         for(Button button : buttons) {
-            if (this.buttons.containsKey(button.getIdentifier()))
+            if (this.buttons.containsKey(button.getIdentifier())){
                 this.buttons.remove(button.getIdentifier());
+            }
+            else {Bukkit.getLogger().warning("Кнопка " + button.getIdentifier() + " не существует");}
         }
         update();
     }

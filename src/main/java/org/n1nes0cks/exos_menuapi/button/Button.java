@@ -15,7 +15,7 @@ public class Button {
     private int slot;
 
 
-    /**Используется только в классе меню, так как {@code identifier} присвается посли обработки через
+    /**Используется только в классе меню, так как {@code identifier} присвается после обработки через
      * {@link org.n1nes0cks.exos_menuapi.menu.MenuProcessor}**/
     public Button(ItemStack itemStack, int slot, ButtonAction action)  {
         this.action = action;
@@ -51,6 +51,14 @@ public class Button {
         return itemStack;
     }
 
+    public void setItemStack(ItemStack itemStack) {
+        this.itemStack = itemStack;
+    }
+
+    public void setSlot(int slot) {
+        this.slot = slot;
+    }
+
     public int getSlot() {
         return slot;
     }
@@ -58,4 +66,5 @@ public class Button {
     public void setIdentifier(String buttonName) {
         this.identifier = buttonName;
     }
+
 }
