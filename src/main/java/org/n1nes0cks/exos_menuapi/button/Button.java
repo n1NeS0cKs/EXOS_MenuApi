@@ -12,24 +12,10 @@ public class Button {
     private final ButtonAction action;
     private String identifier;
     private ItemStack itemStack;
-    private int slot;
 
-
-    /**Используется только в классе меню, так как {@code identifier} присвается после обработки через
-     * {@link org.n1nes0cks.exos_menuapi.menu.MenuProcessor}**/
-    public Button(ItemStack itemStack, int slot, ButtonAction action)  {
+    public Button(String identifier, ItemStack itemStack, ButtonAction action)  {
         this.action = action;
         this.itemStack = itemStack.clone();
-        this.slot = slot;
-    }
-
-    /**Обычно не используется но, он нужнен для создания полноценной кнопки.
-     * Это нужно для реализации в обход обработчика {@link org.n1nes0cks.exos_menuapi.menu.MenuProcessor}
-     * **/
-    public Button(String identifier, ItemStack itemStack, int slot, ButtonAction action)  {
-        this.action = action;
-        this.itemStack = itemStack.clone();
-        this.slot = slot;
         this.identifier = identifier;
         ItemMeta meta = this.itemStack.getItemMeta();
         meta.getPersistentDataContainer().set(
@@ -55,16 +41,14 @@ public class Button {
         this.itemStack = itemStack;
     }
 
-    public void setSlot(int slot) {
-        this.slot = slot;
-    }
-
-    public int getSlot() {
-        return slot;
-    }
-
-    public void setIdentifier(String buttonName) {
-        this.identifier = buttonName;
+    public void setIdentifier(String identifier) {
+        this.identifier = identifier;
+        ItemMeta meta = this.itemStack.getItemMeta();
+        meta.getPersistentDataContainer().set(
+                new NamespacedKey(EXOS_MenuApi.getInit(), "button_name"),
+                PersistentDataType.STRING, identifier
+        );
+        this.itemStack.setItemMeta(meta);
     }
 
 }
