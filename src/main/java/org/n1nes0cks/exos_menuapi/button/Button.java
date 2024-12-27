@@ -12,14 +12,14 @@ public class Button {
     private final ButtonAction action;
     private String identifier;
     private ItemStack itemStack;
+    private static final NamespacedKey namespacedKey = new NamespacedKey(EXOS_MenuApi.getInit(), "button_name");
 
     public Button(String identifier, ItemStack itemStack, ButtonAction action)  {
         this.action = action;
         this.itemStack = itemStack.clone();
         this.identifier = identifier;
         ItemMeta meta = this.itemStack.getItemMeta();
-        meta.getPersistentDataContainer().set(
-                new NamespacedKey(EXOS_MenuApi.getInit(), "button_name"),
+        meta.getPersistentDataContainer().set(namespacedKey,
                 PersistentDataType.STRING, identifier
         );
         this.itemStack.setItemMeta(meta);
@@ -45,10 +45,13 @@ public class Button {
         this.identifier = identifier;
         ItemMeta meta = this.itemStack.getItemMeta();
         meta.getPersistentDataContainer().set(
-                new NamespacedKey(EXOS_MenuApi.getInit(), "button_name"),
+                Button.getNamespacedKey(),
                 PersistentDataType.STRING, identifier
         );
         this.itemStack.setItemMeta(meta);
     }
 
+    public static NamespacedKey getNamespacedKey() {
+        return namespacedKey;
+    }
 }

@@ -8,7 +8,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 
-import org.n1nes0cks.exos_menuapi.EXOS_MenuApi;
 import org.n1nes0cks.exos_menuapi.button.Button;
 
 public  class MenuListener implements Listener {
@@ -25,7 +24,7 @@ public  class MenuListener implements Listener {
         ItemStack clickedItemStack = event.getCurrentItem();
         ItemMeta meta = clickedItemStack != null ? clickedItemStack.getItemMeta() : null;
         if(meta == null) return;
-        NamespacedKey buttonKey = new NamespacedKey(EXOS_MenuApi.getInit(),"button_name");
+        NamespacedKey buttonKey = Button.getNamespacedKey();
 
         boolean isButton = meta.getPersistentDataContainer().has(buttonKey);
         if(!isButton) return;
