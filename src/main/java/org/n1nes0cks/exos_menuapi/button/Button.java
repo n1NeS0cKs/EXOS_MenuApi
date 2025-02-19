@@ -41,17 +41,29 @@ public class Button {
         this.itemStack = itemStack;
     }
 
-    public void setIdentifier(String identifier) {
-        this.identifier = identifier;
+    //public void setIdentifier(String identifier) {
+    //    this.identifier = identifier;
+    //    ItemMeta meta = this.itemStack.getItemMeta();
+    //    meta.getPersistentDataContainer().set(
+    //            Button.getNamespacedKey(),
+    //            PersistentDataType.STRING, identifier
+    //    );
+    //    this.itemStack.setItemMeta(meta);
+    //}
+
+    public static NamespacedKey getNamespacedKey() {
+        return namespacedKey;
+    }
+
+    private void setButtonMeta(ItemStack itemStack) {
         ItemMeta meta = this.itemStack.getItemMeta();
-        meta.getPersistentDataContainer().set(
-                Button.getNamespacedKey(),
+        meta.getPersistentDataContainer().set(namespacedKey,
                 PersistentDataType.STRING, identifier
         );
         this.itemStack.setItemMeta(meta);
     }
 
-    public static NamespacedKey getNamespacedKey() {
-        return namespacedKey;
+    public static boolean isButton(ItemStack itemStack) {
+        return itemStack.getItemMeta().getPersistentDataContainer().has(namespacedKey);
     }
 }
