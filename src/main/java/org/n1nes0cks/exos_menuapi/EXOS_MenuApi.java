@@ -6,10 +6,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public final class EXOS_MenuApi extends JavaPlugin {
 
-    public static Plugin getInit() {
-        return EXOS_MenuApi.getPlugin(EXOS_MenuApi.class);
-    }
-
     @Override
     public void onEnable() {
         // Plugin startup logic
@@ -19,5 +15,9 @@ public final class EXOS_MenuApi extends JavaPlugin {
     @Override
     public void onDisable() {
         // Plugin shutdown logic
+    }
+
+    public static Plugin init() {
+        return EXOS_MenuApi.getPlugin(EXOS_MenuApi.class);
     }
 }
