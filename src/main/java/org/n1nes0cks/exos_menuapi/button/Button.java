@@ -9,15 +9,13 @@ import org.n1nes0cks.exos_menuapi.EXOS_MenuApi;
 public class Button {
 
     private final ButtonAction action;
-    private String identifier;
     private ItemStack itemStack;
     private static final NamespacedKey namespacedKey = new NamespacedKey(EXOS_MenuApi.init(), "button_name");
 
     public Button(String identifier, ItemStack itemStack, ButtonAction action)  {
         this.action = action;
         this.itemStack = itemStack.clone();
-        this.identifier = identifier;
-        setButtonMeta();
+        setButtonMeta(identifier);
     }
 
     public void execute(InventoryClickEvent event) {
@@ -25,11 +23,19 @@ public class Button {
     }
 
     public String getIdentifier() {
-        return identifier;
+        return itemStack.getItemMeta().getPersistentDataContainer().get(namespacedKey, PersistentDataType.STRING);
+    }
+
+    public static String getIdentifier(ItemStack itemStack) {
+        return itemStack.getItemMeta().getPersistentDataContainer().get(namespacedKey, PersistentDataType.STRING);
     }
 
     public ItemStack getItemStack() {
         return itemStack;
+    }
+
+    public ButtonAction getAction() {
+        return action;
     }
 
     public void setItemStack(ItemStack itemStack) {
@@ -37,11 +43,10 @@ public class Button {
     }
 
     public void setIdentifier(String identifier) {
-        this.identifier = identifier;
-        setButtonMeta();
+        setButtonMeta(identifier);
     }
 
-    private void setButtonMeta() {
+    private void setButtonMeta(String identifier) {
         this.itemStack.editMeta(meta -> meta.getPersistentDataContainer().set(
                 namespacedKey,
                 PersistentDataType.STRING,
