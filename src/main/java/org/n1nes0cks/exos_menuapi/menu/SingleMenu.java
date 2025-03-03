@@ -6,44 +6,42 @@ import org.n1nes0cks.exos_menuapi.button.Button;
 
 import java.util.*;
 
-public abstract class SingleMenu extends AbstractMenu{
+public abstract class SingleMenu extends AbstractMenu {
 
-    public SingleMenu(String displayName, int size, boolean cancelled) {
-        super(displayName,size,cancelled);
+    public SingleMenu(String displayName, int size) {
+        super(displayName,size,MenuType.SINGLE);
     }
 
-    public void setButton(Button button, int  ... slots) {
+    public void setButton(Button button, Collection<Integer> slots) {
         for (int slot : slots) {
-            getInventory().setItem(slot, button.getItemStack());
+            inventory.setItem(slot, button.getItemStack());
         }
-        getActions().put(button.getIdentifier(), button.getAction());
+        actions.put(button.getIdentifier(), button.getAction());
     }
 
-    public void setButton(Button button, ArrayList<Integer> slots) {
-        for (int slot : slots) {
-            getInventory().setItem(slot, button.getItemStack());
-        }
-        getActions().put(button.getIdentifier(), button.getAction());
+    public void setButton(Button button, int... slots) {
+        setButton(button, Arrays.asList(Arrays.stream(slots).boxed().toArray(Integer[]::new)));
     }
 
     public void removeButton(Button... buttons) {
-        for(Button button : buttons) {
-            while (getInventory().contains(button.getItemStack())) {
-                getInventory().remove(button.getItemStack());
-            }
-            if (!getActions().containsKey(button.getIdentifier())) return;
-            getActions().remove(button.getIdentifier());
+        for (Button button : buttons) {
+            inventory.remove(button.getItemStack());
+
+            if (!actions.containsKey(button.getIdentifier())) continue;
+            actions.remove(button.getIdentifier());
         }
     }
 
     public void removeButton(int... slots) {
-        for(int slot : slots) {
-            if(getInventory().getItem(slot) == null) continue;
-            ItemStack itemStack = getInventory().getItem(slot);
+        for (int slot : slots) {
+            ItemStack itemStack = inventory.getItem(slot);
+            if (itemStack == null) continue;
+
             String identifier = Button.getIdentifier(itemStack);
-            if(getInventory().contains(itemStack)) return;
-            if(!getActions().containsKey(identifier)) return;
-            getActions().remove(identifier);
+            inventory.clear(slot); // Очищаем слот
+
+            if (identifier == null || !actions.containsKey(identifier)) continue;
+            actions.remove(identifier);
         }
     }
     

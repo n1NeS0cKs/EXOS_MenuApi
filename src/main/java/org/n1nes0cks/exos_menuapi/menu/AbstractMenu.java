@@ -10,24 +10,35 @@ import org.n1nes0cks.exos_menuapi.listeners.MenuListener;
 import java.util.HashMap;
 
 public abstract class AbstractMenu {
-    private final Inventory inventory;
-    private String displayName;
-    private int size;
-    private final HashMap<String, ButtonAction> actions;
+    protected final Inventory inventory;
+    protected String displayName;
+    protected int size;
+    protected final HashMap<String, ButtonAction> actions;
+    protected final MenuType menuType;
 
-    public AbstractMenu(String displayName, int size, boolean cancelled) {
+    public AbstractMenu(String displayName, int size, MenuType menuType) {
         inventory = Bukkit.createInventory(null,size, displayName);
         this.displayName = displayName;
         this.size = size;
         this.actions = new HashMap<>();
-        EXOS_MenuApi.init().getServer().getPluginManager().registerEvents(new MenuListener(this, cancelled), EXOS_MenuApi.init());
+        this.menuType = menuType;
     }
 
     protected abstract void Compile();
 
     public void open(Player player) {
         Compile();
+        MenuListener.registerMenu(player, this); // Регистрируем меню
         player.openInventory(getInventory());
+    }
+
+    public void close(Player player) {
+        MenuListener.unregisterMenu(player);
+        player.closeInventory();
+    }
+
+    public void refresh(Player player) {
+        player.updateInventory();
     }
 
     public HashMap<String, ButtonAction> getActions() {
@@ -46,5 +57,14 @@ public abstract class AbstractMenu {
         return inventory;
     }
 
+    public MenuType getMenuType() {
+        return menuType;
+    }
 
+    public enum MenuType {
+        SINGLE,
+        PAGED
+    }
 }
+
+
