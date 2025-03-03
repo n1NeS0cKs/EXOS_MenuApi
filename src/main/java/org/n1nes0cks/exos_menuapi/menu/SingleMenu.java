@@ -1,5 +1,6 @@
 package org.n1nes0cks.exos_menuapi.menu;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.n1nes0cks.exos_menuapi.button.Button;
@@ -9,7 +10,7 @@ import java.util.*;
 public abstract class SingleMenu extends AbstractMenu {
 
     public SingleMenu(String displayName, int size) {
-        super(displayName,size,MenuType.SINGLE);
+        super(displayName,size);
     }
 
     public void setButton(Button button, Collection<Integer> slots) {
@@ -21,15 +22,13 @@ public abstract class SingleMenu extends AbstractMenu {
 
     public void setButton(Button button, int... slots) {
         setButton(button, Arrays.asList(Arrays.stream(slots).boxed().toArray(Integer[]::new)));
+
     }
 
-    public void removeButton(Button... buttons) {
-        for (Button button : buttons) {
-            inventory.remove(button.getItemStack());
-
-            if (!actions.containsKey(button.getIdentifier())) continue;
-            actions.remove(button.getIdentifier());
-        }
+    public void removeButton(Button button) {
+        inventory.remove(button.getItemStack());
+        if (!actions.containsKey(button.getIdentifier())) return;
+        actions.remove(button.getIdentifier());
     }
 
     public void removeButton(int... slots) {
@@ -44,7 +43,7 @@ public abstract class SingleMenu extends AbstractMenu {
             actions.remove(identifier);
         }
     }
-    
+
     /*public Button itemStackToButton(ItemStack itemStack) {
         if(!itemStack.getItemMeta().getPersistentDataContainer().has(Button.getNamespacedKey())) return null;
         String identifier = itemStack.getItemMeta().getPersistentDataContainer().get(Button.getNamespacedKey(),PersistentDataType.STRING);

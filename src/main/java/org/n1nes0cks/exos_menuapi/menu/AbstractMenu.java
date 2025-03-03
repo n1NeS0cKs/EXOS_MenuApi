@@ -14,14 +14,12 @@ public abstract class AbstractMenu {
     protected String displayName;
     protected int size;
     protected final HashMap<String, ButtonAction> actions;
-    protected final MenuType menuType;
 
-    public AbstractMenu(String displayName, int size, MenuType menuType) {
+    public AbstractMenu(String displayName, int size) {
         inventory = Bukkit.createInventory(null,size, displayName);
         this.displayName = displayName;
         this.size = size;
         this.actions = new HashMap<>();
-        this.menuType = menuType;
     }
 
     protected abstract void Compile();
@@ -35,10 +33,6 @@ public abstract class AbstractMenu {
     public void close(Player player) {
         MenuListener.unregisterMenu(player);
         player.closeInventory();
-    }
-
-    public void refresh(Player player) {
-        player.updateInventory();
     }
 
     public HashMap<String, ButtonAction> getActions() {
@@ -57,14 +51,6 @@ public abstract class AbstractMenu {
         return inventory;
     }
 
-    public MenuType getMenuType() {
-        return menuType;
-    }
-
-    public enum MenuType {
-        SINGLE,
-        PAGED
-    }
 }
 
 
