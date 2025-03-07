@@ -10,11 +10,13 @@ public class Button {
 
     private final ButtonAction action;
     private ItemStack itemStack;
+    private ItemStack sourceItemStack;
     private static final NamespacedKey namespacedKey = new NamespacedKey(EXOS_MenuApi.init(), "button_name");
 
     public Button(String identifier, ItemStack itemStack, ButtonAction action)  {
         this.action = action;
         this.itemStack = itemStack.clone();
+        this.sourceItemStack = itemStack.clone();
         setButtonMeta(identifier);
     }
 
@@ -34,12 +36,16 @@ public class Button {
         return itemStack;
     }
 
+    public ItemStack getSourceItemStack() {return sourceItemStack;}
+
     public ButtonAction getAction() {
         return action;
     }
 
     public void setItemStack(ItemStack itemStack) {
+        String identifier = getIdentifier();
         this.itemStack = itemStack;
+        setButtonMeta(identifier);
     }
 
     public void setIdentifier(String identifier) {
