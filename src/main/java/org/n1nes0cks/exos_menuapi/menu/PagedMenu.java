@@ -29,7 +29,7 @@ public abstract class PagedMenu extends SingleMenu {
     }
 
     public void nextPage() {
-        if ((currentPage + 1) * size >= items.size()) return; // Проверяем, есть ли элементы
+        if ((currentPage + 1) * (size - 9) >= items.size()) return; // Проверяем, есть ли элементы
         if (currentPage < maxPage - 1) {
             currentPage++;
             update();
@@ -47,7 +47,7 @@ public abstract class PagedMenu extends SingleMenu {
         inventory.clear();
         int firstSlot = size * currentPage;
 
-        for (int slot = 0; slot < 45; slot++) {
+        for (int slot = 0; slot < size - 9; slot++) {
             int itemIndex = firstSlot + slot;
             if (itemIndex < items.size()) {
                 inventory.setItem(slot, items.get(itemIndex));
