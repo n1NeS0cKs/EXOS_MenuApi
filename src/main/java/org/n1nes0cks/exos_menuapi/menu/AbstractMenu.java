@@ -2,8 +2,8 @@ package org.n1nes0cks.exos_menuapi.menu;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
-import org.n1nes0cks.exos_menuapi.EXOS_MenuApi;
 import org.n1nes0cks.exos_menuapi.button.ButtonAction;
 import org.n1nes0cks.exos_menuapi.listeners.MenuListener;
 
@@ -50,6 +50,8 @@ public abstract class AbstractMenu {
     public Inventory getInventory() {
         return inventory;
     }
+
+    public void notButtonAction(InventoryClickEvent event) {}
 
 }
 

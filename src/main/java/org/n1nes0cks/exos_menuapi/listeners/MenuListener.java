@@ -1,6 +1,5 @@
 package org.n1nes0cks.exos_menuapi.listeners;
 
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -10,7 +9,6 @@ import org.bukkit.inventory.ItemStack;
 import org.n1nes0cks.exos_menuapi.button.Button;
 import org.n1nes0cks.exos_menuapi.button.ButtonAction;
 import org.n1nes0cks.exos_menuapi.menu.AbstractMenu;
-import org.n1nes0cks.exos_menuapi.menu.SingleMenu;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -36,7 +34,10 @@ public class MenuListener implements Listener {
 
         event.setCancelled(true);
         ItemStack clickedItem = event.getCurrentItem();
-        if (clickedItem == null || !Button.isButton(clickedItem)) return;
+        if (clickedItem == null) return;
+        if (!Button.isButton(clickedItem)) {
+            menu.notButtonAction(event);
+        }
 
         ButtonAction action = menu.getActions().get(Button.getIdentifier(clickedItem));
         if (action != null) action.execute(event);

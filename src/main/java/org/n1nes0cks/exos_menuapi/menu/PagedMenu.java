@@ -1,6 +1,5 @@
 package org.n1nes0cks.exos_menuapi.menu;
 
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.n1nes0cks.exos_menuapi.button.Button;
@@ -28,7 +27,7 @@ public abstract class PagedMenu extends SingleMenu {
         items = new ArrayList<>();
     }
 
-    public void nextPage() {
+    public final void nextPage() {
         if ((currentPage + 1) * (size - 9) >= items.size()) return; // Проверяем, есть ли элементы
         if (currentPage < maxPage - 1) {
             currentPage++;
@@ -36,14 +35,14 @@ public abstract class PagedMenu extends SingleMenu {
         }
     }
 
-    public void previousPage() {
+    public final void previousPage() {
         if (currentPage > 0) {
             currentPage--;
             update();
         }
     }
 
-    private void update() {
+    private final void update() {
         inventory.clear();
         int firstSlot = size * currentPage;
 
@@ -56,7 +55,7 @@ public abstract class PagedMenu extends SingleMenu {
         Compile();
     }
 
-    public void addButton(Button button) {
+    public final void addButton(Button button) {
         if (maxPage != Integer.MAX_VALUE && items.size() >= maxPage * size) return;
         items.add(button.getItemStack());
         if(!actions.containsKey(button.getIdentifier())) {
@@ -66,14 +65,14 @@ public abstract class PagedMenu extends SingleMenu {
     }
 
     @Override
-    public void removeButton(Button button) {
+    public final void removeButton(Button button) {
         super.removeButton(button);
         if(items.isEmpty()) return;
         items.remove(button.getItemStack());
         update();
     }
 
-    public void eraseButton() {
+    public final void eraseButton() {
         if(items.isEmpty()) return;
         ItemStack itemStack = items.remove(items.size()-1);
         if(!items.contains(itemStack)){
@@ -95,11 +94,11 @@ public abstract class PagedMenu extends SingleMenu {
         super.open(player);
     }
 
-    public ArrayList<ItemStack> getItems() {
+    public final ArrayList<ItemStack> getItems() {
         return items;
     }
 
-    public void setItems(ArrayList<ItemStack> items) {
+    public final void setItems(ArrayList<ItemStack> items) {
         this.items = items;
     }
 }
