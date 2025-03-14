@@ -2,8 +2,6 @@ package org.n1nes0cks.exos_menuapi.menu;
 
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.n1nes0cks.exos_menuapi.button.Button;
-import org.n1nes0cks.exos_menuapi.button.ButtonAction;
 
 import java.util.ArrayList;
 
@@ -27,6 +25,13 @@ public abstract class PagedMenu extends SingleMenu {
         items = new ArrayList<>();
     }
 
+    public PagedMenu(String displayName, int size, ArrayList<ItemStack> items) {
+        super(displayName, size);
+        this.maxPage = Integer.MAX_VALUE;
+        currentPage = 0;
+        this.items = new ArrayList<>(items);
+    }
+
     public final void nextPage() {
         if ((currentPage + 1) * (size - 9) >= items.size()) return; // Проверяем, есть ли элементы
         if (currentPage < maxPage - 1) {
@@ -42,7 +47,7 @@ public abstract class PagedMenu extends SingleMenu {
         }
     }
 
-    private final void update() {
+    public void update() {
         inventory.clear();
         int firstSlot = size * currentPage;
 
@@ -52,39 +57,40 @@ public abstract class PagedMenu extends SingleMenu {
                 inventory.setItem(slot, items.get(itemIndex));
             }
         }
-        Compile();
+        setupButtons();
     }
 
-    public final void addButton(Button button) {
-        if (maxPage != Integer.MAX_VALUE && items.size() >= maxPage * size) return;
-        items.add(button.getItemStack());
-        if(!actions.containsKey(button.getIdentifier())) {
-            actions.put(button.getIdentifier(), button.getAction());
-        }
+    public final void addButton(ItemStack itemStack) {
+        int maxItems = maxPage * (size - 9); // Учитываем, что последние 9 слотов — кнопки
+        if (maxPage != Integer.MAX_VALUE && items.size() >= maxItems) return;
+
+        items.add(itemStack);
         update();
     }
 
     @Override
-    public final void removeButton(Button button) {
-        super.removeButton(button);
-        if(items.isEmpty()) return;
-        items.remove(button.getItemStack());
+    public final void removeButton(ItemStack itemStack) {
+        super.removeButton(itemStack);
+        if (items.isEmpty()) return;
+
+        items.removeIf(item -> item.equals(itemStack)); // Удаляет все вхождения предмета
         update();
     }
 
     public final void eraseButton() {
-        if(items.isEmpty()) return;
-        ItemStack itemStack = items.remove(items.size()-1);
-        if(!items.contains(itemStack)){
-            ButtonAction action = actions.get(Button.getIdentifier(itemStack));
-            if(!actions.containsKey(action)) return;
-            actions.remove(action);
+        if (items.isEmpty()) return;
+
+        items.remove(items.size() - 1);
+        if (!items.isEmpty()) {
+            update();
         }
-        update();
     }
 
 
     public void open(Player player, int page) {
+        if (page < 0) page = 0;
+        if (page >= maxPage) page = maxPage - 1;
+
         currentPage = page;
         open(player);
     }
