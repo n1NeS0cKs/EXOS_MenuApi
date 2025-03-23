@@ -46,6 +46,7 @@ public class MenuListener implements Listener {
 
     @EventHandler
     public void onInventoryClose(InventoryCloseEvent event) {
+        if(event.getReason() == InventoryCloseEvent.Reason.OPEN_NEW) return;
         unregisterMenu((Player) event.getPlayer());
     }
 }

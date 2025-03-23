@@ -10,12 +10,14 @@ public abstract class PagedMenu extends SingleMenu {
     private int maxPage;
     private int currentPage;
     private ArrayList<ItemStack> items;
+    private int pageSize;
 
     public PagedMenu(String displayName, int size, int maxPage) {
         super(displayName, size);
         this.maxPage = maxPage;
         currentPage = 0;
         items = new ArrayList<>();
+        pageSize = size - 9;
     }
 
     public PagedMenu(String displayName, int size) {
@@ -23,6 +25,7 @@ public abstract class PagedMenu extends SingleMenu {
         this.maxPage = Integer.MAX_VALUE;
         currentPage = 0;
         items = new ArrayList<>();
+        pageSize = size - 9;
     }
 
     public PagedMenu(String displayName, int size, ArrayList<ItemStack> items) {
@@ -30,10 +33,11 @@ public abstract class PagedMenu extends SingleMenu {
         this.maxPage = Integer.MAX_VALUE;
         currentPage = 0;
         this.items = new ArrayList<>(items);
+        pageSize = size - 9;
     }
 
     public final void nextPage() {
-        if ((currentPage + 1) * (size - 9) >= items.size()) return; // Проверяем, есть ли элементы
+        if ((currentPage + 1) * pageSize > items.size()) return; // Проверяем, есть ли элементы
         if (currentPage < maxPage - 1) {
             currentPage++;
             update();
@@ -49,9 +53,9 @@ public abstract class PagedMenu extends SingleMenu {
 
     public void update() {
         inventory.clear();
-        int firstSlot = size * currentPage;
+        int firstSlot = pageSize * currentPage;
 
-        for (int slot = 0; slot < size - 9; slot++) {
+        for (int slot = 0; slot < pageSize; slot++) {
             int itemIndex = firstSlot + slot;
             if (itemIndex < items.size()) {
                 inventory.setItem(slot, items.get(itemIndex));
@@ -61,7 +65,7 @@ public abstract class PagedMenu extends SingleMenu {
     }
 
     public final void addButton(ItemStack itemStack) {
-        int maxItems = maxPage * (size - 9); // Учитываем, что последние 9 слотов — кнопки
+        int maxItems = maxPage * pageSize; // Учитываем, что последние 9 слотов — кнопки
         if (maxPage != Integer.MAX_VALUE && items.size() >= maxItems) return;
 
         items.add(itemStack);
