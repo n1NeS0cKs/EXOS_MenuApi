@@ -8,11 +8,11 @@ public final class EXOS_MenuApi extends JavaPlugin {
     @Override
     public void onEnable() {
         // Plugin startup logic
+        getServer().getPluginManager().registerEvents(new MenuListener(), this);
     }
 
     @Override
     public void onDisable() {
-        // Plugin shutdown logic
     }
 
     public static Plugin getPlugin() {
