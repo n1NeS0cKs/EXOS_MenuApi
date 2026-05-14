@@ -14,11 +14,18 @@ public abstract class AbstractPagedMenu extends AbstractMenu{
     public AbstractPagedMenu(int size, Component title, List<ItemStack> itemStacks) {
         super(size, title);
         this.itemStacks = itemStacks;
-        initializePage();
+        updatePage();
         initializeItems();
     }
 
-    private void initializePage() {
+    public AbstractPagedMenu(int size, Component title) {
+        super(size, title);
+        this.itemStacks = null;
+        updatePage();
+        initializeItems();
+    }
+
+    public void updatePage() {
         int area = getWidth() * getHeight();
         int startItemIndex = currentPage * area;
         List<Integer> slots = Utils.selectInvSquare(getStartIndex(),getWidth(),getHeight());
@@ -38,7 +45,7 @@ public abstract class AbstractPagedMenu extends AbstractMenu{
     public void previousPage() {
         if(hasPreviousPage()){
             currentPage--;
-            initializePage();
+            updatePage();
             initializeItems();
         }
     }
@@ -46,7 +53,7 @@ public abstract class AbstractPagedMenu extends AbstractMenu{
     public void nextPage() {
         if(hasNextPage()){
             currentPage++;
-            initializePage();
+            updatePage();
             initializeItems();
         }
     }
@@ -54,6 +61,7 @@ public abstract class AbstractPagedMenu extends AbstractMenu{
     public int getStartIndex() {return 0;}
     public int getWidth() {return 9;}
     public int getHeight() {return 5;}
+    public List<ItemStack> getItemStacks() {return itemStacks;}
 
     public int getTotalPages() {
         int itemsPerPage = getWidth() * getHeight();
